@@ -1,0 +1,14 @@
+[flake8]
+exclude =
+    djangoenv/,
+    djangoenv/*,
+    */site-packages/*,
+    node_modules/,
+    node_modules/*,
+    migrations/,
+    frontend/node_modules,
+    __pycache__/,
+    env/,
+    venv/
+max-line-length = 79
+
