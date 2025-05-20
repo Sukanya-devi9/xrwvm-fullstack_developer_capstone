@@ -2,9 +2,9 @@ name: 'Lint Code'
 
 on:
   push:
-    branches: [django-setup]
+    branches: [master,main]
   pull_request:
-    branches: [django-setup]
+    branches: [master,main]
 
 jobs:
   lint_python:
