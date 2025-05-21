@@ -30,7 +30,7 @@ jobs:
 
     - name: Run Linter
       run: |
-        # Run flake8 on Python files (excluding node_modules)
+        REM Run flake8 on Python files (excluding node_modules)
         flake8 server --exclude=server\\node_modules
         echo Linted all the Python files successfully
 
