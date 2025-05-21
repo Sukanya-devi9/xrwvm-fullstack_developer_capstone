@@ -1,11 +1,11 @@
 # Uncomment the required imports before adding the code
 
-from django.shortcuts import render
+# from django.shortcuts import render
 # from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 # from django.shortcuts import render
 # from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 # from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout
@@ -69,7 +69,7 @@ def registration(request):
         # check if user already exists
         User.objects.get(username=username)
         username_exist = True
-    except  User.DoesNotExist:
+    except ObjectDoesNotExist:
         # If not,simply log this as user
         logger.debug("{} is new user".format(username))
     # if it is a new user
@@ -150,7 +150,7 @@ def add_review(request):
             return JsonResponse({"status": 200, "data": response})
         except (KeyError, ValueError, TypeError) as e:
             return JsonResponse(
-                {"status": 401, "message": "Error in posting review:{e}"}
+                {"status": 401, "message":  f"Error in posting review: {e}"}
             )
         except Exception as e:
             return JsonResponse(
