@@ -1,0 +1,60 @@
+ name: 'Lint Code'
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  lint_python:
+    name: Lint Python Files
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+
+    - name: Print working directory
+      run: echo %cd%
+
+    - name: Run Linter
+      run: |
+        # Run flake8 on Python files (excluding node_modules)
+        flake8 server --exclude=server\\node_modules
+        echo Linted all the Python files successfully
+
+  lint_js:
+    name: Lint JavaScript Files
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14
+
+    - name: Install JSHint
+      run: npm install jshint --global
+
+    - name: Run Linter
+      shell: pwsh
+      run: |
+        # Use PowerShell to find and lint all .js files
+        Get-ChildItem -Recurse -Include *.js -Path "server/database" | ForEach-Object {
+          jshint $_.FullName
+        }
+        echo "Linted all the JS files successfully"
