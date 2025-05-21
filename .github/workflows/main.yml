@@ -4,7 +4,7 @@ on:
   push:
     branches: [master, main, django-setup]
   pull_request:
-    branches: [master, main, django-set-up]
+    branches: [master, main, django-setup]
 
 jobs:
   lint_python:
