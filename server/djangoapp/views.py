@@ -3,6 +3,10 @@
 from django.shortcuts import render
 # from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
+# from django.shortcuts import render
+# from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 # from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout
 # from django.contrib import messages
@@ -65,7 +69,7 @@ def registration(request):
         # check if user already exists
         User.objects.get(username=username)
         username_exist = True
-    except requests.exceptions.RequestException as e:
+    except  User.DoesNotExist:
         # If not,simply log this as user
         logger.debug("{} is new user".format(username))
     # if it is a new user
@@ -144,9 +148,13 @@ def add_review(request):
         try:
             response = post_review(data)
             return JsonResponse({"status": 200, "data": response})
-        except  requests.exceptions.RequestException as e:
+        except (KeyError, ValueError, TypeError) as e:
             return JsonResponse(
-                {"status": 401, "message": "Error in posting review"}
+                {"status": 401, "message": "Error in posting review:{e}"}
+            )
+        except Exception as e:
+            return JsonResponse(
+                 {"status": 500, "message": f"Server error: {e}"}
             )
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
